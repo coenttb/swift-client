@@ -13,7 +13,7 @@ struct `Client Tests` {
 
     @Test
     func `a refusing client throws its declared failure`() async throws {
-        enum Refusal: Swift.Error, Equatable {
+        enum Refusal: Swift::Error, Equatable {
             case negative
         }
         let guarded = Client<Int, Int, Refusal>(
@@ -37,11 +37,11 @@ struct `Client Tests` {
 @Suite
 struct `Client promoted Tests` {
 
-    enum Refusal: Swift.Error, Equatable {
+    enum Refusal: Swift::Error, Equatable {
         case negative
     }
 
-    enum Outage: Swift.Error, Equatable {
+    enum Outage: Swift::Error, Equatable {
         case down
     }
 
@@ -72,11 +72,11 @@ struct `Client promoted Tests` {
 @Suite
 struct `Client collapsed Tests` {
 
-    enum Refusal: Swift.Error, Equatable {
+    enum Refusal: Swift::Error, Equatable {
         case negative
     }
 
-    enum Outage: Swift.Error, Equatable {
+    enum Outage: Swift::Error, Equatable {
         case down
     }
 
@@ -93,7 +93,7 @@ struct `Client collapsed Tests` {
 
     @Test
     func `a promoted client collapses back to the domain refusal`() async {
-        let promoted: Client<Int, Int, Either<Swift.Never, Refusal>> = Self.guarded.promoted()
+        let promoted: Client<Int, Int, Either<Swift::Never, Refusal>> = Self.guarded.promoted()
         let back: Client<Int, Int, Refusal> = promoted.collapsed()
         do throws(Refusal) {
             _ = try await back(-1)
@@ -105,8 +105,8 @@ struct `Client collapsed Tests` {
 
     @Test
     func `an infallible remote row collapses to the external failure alone`() async {
-        let failing = Client<Int, Int, Either<Outage, Swift.Never>>(
-            run: { _ throws(Either<Outage, Swift.Never>) in
+        let failing = Client<Int, Int, Either<Outage, Swift::Never>>(
+            run: { _ throws(Either<Outage, Swift::Never>) in
                 throw .left(.down)
             }
         )

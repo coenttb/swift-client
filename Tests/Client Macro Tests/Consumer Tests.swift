@@ -28,7 +28,7 @@ struct Counter: Counter.`Protocol` {
         var value: Int
     }
 
-    enum Error: Swift.Error, Equatable {
+    enum Error: Swift::Error, Equatable {
         case exceeded
     }
 
@@ -51,7 +51,7 @@ struct Example: Example.`Protocol` {
     }
 }
 
-private enum Transport: Swift.Error, Equatable {
+private enum Transport: Swift::Error, Equatable {
     case unreachable
     case malformed
 }

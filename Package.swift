@@ -31,7 +31,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "Client Consumer Fixtures", dependencies: [
-            "Client Macro",
+            .target(name: "Client Macro"),
             .product(name: "Interface Macro", package: "swift-interface"),
         ]),
         .target(
@@ -43,7 +43,7 @@ let package = Package(
         .testTarget(
             name: "Client Tests",
             dependencies: [
-                "Client",
+                .target(name: "Client"),
                 .product(name: "Either", package: "swift-either"),
             ]
         ),
@@ -60,7 +60,7 @@ let package = Package(
         .macro(
             name: "Client Macro Plugin",
             dependencies: [
-                "Client Macro Core",
+                .target(name: "Client Macro Core"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
@@ -70,8 +70,8 @@ let package = Package(
             name: "Client Macro",
             dependencies: [
                 .product(name: "Product Macro", package: "swift-product"),
-                "Client Macro Plugin",
-                "Client",
+                .target(name: "Client Macro Plugin"),
+                .target(name: "Client"),
                 .product(name: "Either", package: "swift-either"),
                 .product(name: "Operation", package: "swift-operation"),
             ]
@@ -79,9 +79,9 @@ let package = Package(
         .testTarget(
             name: "Client Macro Tests",
             dependencies: [
-                "Client Consumer Fixtures",
-                "Client Macro",
-                "Client",
+                .target(name: "Client Consumer Fixtures"),
+                .target(name: "Client Macro"),
+                .target(name: "Client"),
                 .product(name: "Either", package: "swift-either"),
                 .product(name: "Operation", package: "swift-operation"),
                 .product(name: "Interface Macro", package: "swift-interface"),
@@ -98,12 +98,8 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableExperimentalFeature("Lifetimes"),
+        .treatAllWarnings(as: .error),
     ]
-}
-
-// Consumer compilation must reject visibility regressions, even when other packages suppress warnings.
-for target in package.targets where target.type == .test || target.name.hasSuffix("Consumer Fixtures") {
-    target.swiftSettings = (target.swiftSettings ?? []) + [.treatAllWarnings(as: .error)]
 }
