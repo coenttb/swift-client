@@ -25,7 +25,8 @@ public struct Macro: PeerMacro {
             return nil
         }
         let spelling = declaration.name.text
-        let name = spelling.first == "`" && spelling.last == "`"
+        let name =
+            spelling.first == "`" && spelling.last == "`"
             ? String(spelling.dropFirst().dropLast())
             : spelling
         guard name == "Protocol" || name == "Interface", let owner else {
