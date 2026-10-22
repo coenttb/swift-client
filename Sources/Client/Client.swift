@@ -1,3 +1,5 @@
+import _Concurrency
+
 public struct Client<Input: ~Copyable, Output: ~Copyable, Failure: Swift::Error> {
 
     public let run: (consuming Input) async throws(Failure) -> Output

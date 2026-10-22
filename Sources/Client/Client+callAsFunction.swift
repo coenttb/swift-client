@@ -1,3 +1,5 @@
+import _Concurrency
+
 extension Client where Input: ~Copyable, Output: ~Copyable {
 
     @inlinable
